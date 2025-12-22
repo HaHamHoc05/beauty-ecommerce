@@ -106,7 +106,7 @@ public class MySQLProductRepository implements ProductRepository {
     @Override
     public List<Product> findAll() {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM products ORDER BY id DESC"; // Lấy mới nhất trước
+        String sql = "SELECT * FROM products WHERE status = 'ACTIVE' ORDER BY id DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {

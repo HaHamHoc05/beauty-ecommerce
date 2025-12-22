@@ -48,7 +48,7 @@ public class CartServlet extends HttpServlet {
 
         // Xem giỏ hàng
         controller.viewCart(user.getId());
-        req.setAttribute("cart", presenter.getViewModel().getCart());
+        req.setAttribute("cart", presenter.getViewModel());
         req.getRequestDispatcher("/views/cart.jsp").forward(req, resp);
     }
 
@@ -82,7 +82,7 @@ public class CartServlet extends HttpServlet {
     }
 
     private User getUser(HttpServletRequest req) {
-        String username = (String) req.getSession().getAttribute("user");
+        String username = (String) req.getSession().getAttribute("userid");
         return (username != null) ? userRepo.findByUsername(username) : null;
     }
 }

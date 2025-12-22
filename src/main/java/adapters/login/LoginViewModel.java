@@ -20,4 +20,8 @@ public class LoginViewModel {
     public String getErrorMessage() { return errorMessage; }
     public String getFullName() { return fullname; }
     public String getRole() { return role; }
+
+    public boolean isSuccess() {
+        return "SUCCESS".equals(this.status);
+    }
 }

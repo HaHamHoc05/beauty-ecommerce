@@ -11,7 +11,6 @@ public class RegisterController {
     }
 
     public void register(String username, String password, String confirm, String fullname, String email) {
-        RegisterInputData input = new RegisterInputData(username, password, confirm, fullname, email);
-        inputBoundary.execute(input);
+        RegisterInputData input = new RegisterInputData(username, email, password, confirm, fullname);        inputBoundary.execute(input);
     }
 }

@@ -24,8 +24,7 @@ public class MySQLUserRepository implements UserRepository {
                 if (rs.next()) {
                     User user = new User();
                     user.setId(rs.getInt("id"));
-                    user.setUsername(rs.getString(username));
-                    user.setPassword(rs.getString("password"));
+                    user.setUsername(rs.getString("username"));                    user.setPassword(rs.getString("password"));
                     user.setFullName(rs.getString("full_name"));
                     user.setEmail(rs.getString("email"));
                     user.setPhone(rs.getString("phone"));

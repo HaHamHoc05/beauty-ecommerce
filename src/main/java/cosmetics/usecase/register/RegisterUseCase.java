@@ -30,9 +30,11 @@ public class RegisterUseCase implements InputBoundary<RegisterInputData> {
         }
         if (userRepository.existsByEmail(input.getEmail())) {
             outputBoundary.present(new RegisterOutputData(false,"Email đã được sử dụng"));
+            return;
         }
         if (userRepository.existsByUsername(input.getUsername())) {
             outputBoundary.present(new RegisterOutputData(false,"Tên đăng nhập đã tồn tại"));
+            return;
         }
 
         User newUser = new User();

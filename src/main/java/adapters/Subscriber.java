@@ -1,5 +1,5 @@
 package adapters;
 
-public class Subscriber {
+public interface  Subscriber {
     void update (String eventType, Object date);
 }
