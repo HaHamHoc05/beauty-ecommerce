@@ -10,7 +10,7 @@ public class AddCategoryController {
         this.inputBoundary = inputBoundary;
     }
 
-    public void execute(String name) {
+    public void addCategory(String name) {
         AddCategoryInputData input = new AddCategoryInputData(name);
         inputBoundary.execute(input);
     }

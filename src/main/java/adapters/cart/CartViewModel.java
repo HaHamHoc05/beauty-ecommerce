@@ -1,5 +1,6 @@
 package adapters.cart;
 
+import cosmetics.entities.Cart;
 import cosmetics.usecase.cart.dto.CartItemDTO;
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +17,8 @@ public class CartViewModel {
     // 3. Dữ liệu cập nhật icon (Dùng cho Add)
     private int totalItems;
 
+    private Cart cart;
+
     // --- Getters & Setters ---
     public List<CartItemDTO> getItems() { return items; }
     public void setItems(List<CartItemDTO> items) { this.items = items; }
@@ -31,4 +34,7 @@ public class CartViewModel {
 
     public int getTotalItems() { return totalItems; }
     public void setTotalItems(int totalItems) { this.totalItems = totalItems; }
+
+    public Cart getCart() { return cart; }
+    public void setCart(Cart cart) { this.cart = cart; }
 }

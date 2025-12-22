@@ -7,6 +7,7 @@ public class ProductViewModel {
     private List<ProductDTO> products; // Dùng cho Get List
     private String message;            // Dùng cho Add, Edit, Delete
     private boolean success;           // Dùng để check thành công/thất bại
+    private String status;      // "SUCCESS", "ERROR"
 
 
 
@@ -18,4 +19,7 @@ public class ProductViewModel {
 
     public boolean isSuccess() { return success; }
     public void setSuccess(boolean success) { this.success = success; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

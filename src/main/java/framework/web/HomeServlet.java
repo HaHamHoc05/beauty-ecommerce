@@ -28,7 +28,7 @@ public class HomeServlet extends HttpServlet {
 
         // 2. Khởi tạo Controller (Chỉ truyền UseCase cần thiết, các cái khác null)
         // ProductController(Add, Edit, Delete, GetList)
-        this.controller = new ProductController(null, null, null, getListUC);
+        this.controller = new ProductController(null, getListUC,null, null);
     }
 
     @Override

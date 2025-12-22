@@ -40,7 +40,7 @@ public class AdminProductServlet extends HttpServlet {
         GetProductListUseCase getListUC = new GetProductListUseCase(presenter, productRepo);
 
         // 2. Gom vào Controller
-        this.controller = new ProductController(addUC, editUC, deleteUC, getListUC);
+        this.controller = new ProductController(addUC, getListUC, editUC, deleteUC);
     }
 
     @Override

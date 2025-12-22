@@ -38,7 +38,7 @@ public class CartServlet extends HttpServlet {
         RemoveCartUseCase removeUC = new RemoveCartUseCase(presenter, cartRepo);
         UpdateCartUseCase updateUC = new UpdateCartUseCase(presenter, cartRepo, productRepo);
 
-        this.controller = new CartController(addUC, getUC, removeUC, updateUC);
+        this.controller = new CartController(addUC, getUC,updateUC, removeUC);
     }
 
     @Override

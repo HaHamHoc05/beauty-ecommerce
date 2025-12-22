@@ -46,20 +46,25 @@ public class LoginServlet extends HttpServlet {
 
         var vm = presenter.getViewModel();
 
-        if (vm.isSuccess()) {
-            // Login thành công -> Lưu session
-            HttpSession session = req.getSession();
-            session.setAttribute("user", username);
-            session.setAttribute("role", vm.getRole()); // Lưu role để phân quyền Admin
+        if ("SUCCESS".equals(vm.getStatus())) {
 
-            // Điều hướng dựa trên Role
+            HttpSession session = req.getSession();
+            // Lưu thông tin vào session (Lấy từ ViewModel)
+            session.setAttribute("user", vm.getFullName()); // ViewModel có getFullName()
+            session.setAttribute("role", vm.getRole());     // ViewModel có getRole()
+
+            // Điều hướng
             if ("ADMIN".equals(vm.getRole())) {
-                resp.sendRedirect("admin/orders"); // Admin vào trang quản lý đơn
+                resp.sendRedirect("admin/orders");
             } else {
-                resp.sendRedirect("home"); // Khách vào trang chủ
+                resp.sendRedirect("home");
             }
+
         } else {
-            req.setAttribute("error", vm.getMessage());
+            // Thất bại
+            // Thay vì vm.getMessage() -> Hãy dùng getErrorMessage()
+            req.setAttribute("error", vm.getErrorMessage());
+
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
         }
     }

@@ -5,16 +5,20 @@ import cosmetics.entities.Cart;
 import cosmetics.entities.CartItem;
 import repository.CartRepository;
 import cosmetics.usecase.cart.dto.CartItemDTO;
+import repository.ProductRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateCartUseCase implements InputBoundary<UpdateCartInputData> {
     private final UpdateCartOutputBoundary outputBoundary;
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository; // Thêm biến này
 
-    public UpdateCartUseCase(UpdateCartOutputBoundary outputBoundary, CartRepository cartRepository) {
+    public UpdateCartUseCase(UpdateCartOutputBoundary outputBoundary, CartRepository cartRepository,ProductRepository productRepository) {
         this.outputBoundary = outputBoundary;
         this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
 
     @Override

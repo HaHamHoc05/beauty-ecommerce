@@ -48,14 +48,13 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        controller.register(username, password, fullName, email);
-
+        controller.register(username, password, confirm, fullName, email);
         var vm = presenter.getViewModel();
-        if (vm.isSuccess()) {
-            // Đăng ký thành công -> Chuyển sang login
+        if ("SUCCESS".equals(vm.getStatus())) {
+            // Thành công -> Chuyển qua trang Login
             resp.sendRedirect("login?message=register_success");
         } else {
-            // Thất bại -> Báo lỗi
+            // Thất bại -> Hiện lỗi (Dùng getMessage() hoặc getErrorMessage() tùy ViewModel của bạn)
             req.setAttribute("error", vm.getMessage());
             req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
         }

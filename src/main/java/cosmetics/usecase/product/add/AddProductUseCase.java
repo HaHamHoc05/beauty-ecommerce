@@ -8,11 +8,10 @@ import java.math.BigDecimal;
 
 public class AddProductUseCase implements InputBoundary<AddProductInputData> {
 
-    private final OutputBoundary<AddProductOutputData> outputBoundary;
+    private final AddProductOutputBoundary outputBoundary;
     private final ProductRepository productRepository;
 
-    public AddProductUseCase(OutputBoundary<AddProductOutputData> outputBoundary,
-                             ProductRepository productRepository) {
+    public AddProductUseCase(AddProductOutputBoundary outputBoundary, ProductRepository productRepository) {
         this.outputBoundary = outputBoundary;
         this.productRepository = productRepository;
     }
