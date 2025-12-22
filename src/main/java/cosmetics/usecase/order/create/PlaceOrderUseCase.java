@@ -73,7 +73,7 @@ public class PlaceOrderUseCase implements InputBoundary<PlaceOrderInputData> {
             }
 
             try {
-                    product.setStockQuantity(cartItem.getQuantity());
+                    product.stockQuantity(cartItem.getQuantity());
             } catch (Exception e) {
                 outputBoundary.present(new PlaceOrderOutputData(false, "Sản phẩm '" + product.getName() + "' không đủ hàng!"));
                 return;

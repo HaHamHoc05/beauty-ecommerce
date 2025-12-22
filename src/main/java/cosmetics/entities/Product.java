@@ -88,4 +88,32 @@ public class Product {
     public boolean isAvailable() {
         return "ACTIVE".equals(this.status) && this.stockQuantity > 0;
     }
+    public void reduceStock(int quantityToReduce) {
+        // Phòng hờ null pointer
+        if (this.stockQuantity == null) {
+            this.stockQuantity = 0;
+        }
+
+        if (quantityToReduce <= 0) {
+            throw new IllegalArgumentException("Số lượng mua phải lớn hơn 0");
+        }
+
+        if (this.stockQuantity < quantityToReduce) {
+            // Ném lỗi này để UseCase bắt được và báo cho người dùng
+            throw new IllegalStateException("Không đủ hàng trong kho! (Còn: " + this.stockQuantity + ")");
+        }
+
+        this.stockQuantity -= quantityToReduce;
+    }
+
+    // 3. Nhập thêm hàng (Dùng cho Admin Update Product sau này)
+    public void restock(int quantityToAdd) {
+        if (quantityToAdd <= 0) {
+            throw new IllegalArgumentException("Số lượng nhập phải lớn hơn 0");
+        }
+        if (this.stockQuantity == null) {
+            this.stockQuantity = 0;
+        }
+        this.stockQuantity += quantityToAdd;
+    }
 }
