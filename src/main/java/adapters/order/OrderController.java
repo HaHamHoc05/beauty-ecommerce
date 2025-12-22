@@ -1,8 +1,11 @@
 package adapters.order;
 
 import cosmetics.usecase.order.create.*;
-import cosmetics.usecase.order.get.list.*;
-import cosmetics.usecase.order.get.detail.*;
+import cosmetics.usecase.order.detail.GetOrderDetailInputData;
+import cosmetics.usecase.order.detail.GetOrderDetailUseCase;
+import cosmetics.usecase.order.get.GetMyOrdersInputData;
+import cosmetics.usecase.order.get.GetMyOrdersUseCase;
+
 
 public class OrderController {
     private final PlaceOrderUseCase placeOrderUseCase;
