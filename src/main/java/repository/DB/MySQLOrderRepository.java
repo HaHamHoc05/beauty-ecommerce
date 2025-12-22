@@ -4,6 +4,8 @@ import cosmetics.entities.OrderItem;
 import repository.OrderRepository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySQLOrderRepository implements OrderRepository {
 
@@ -47,19 +49,23 @@ public class MySQLOrderRepository implements OrderRepository {
             }
 
             // 3. Lưu bảng ORDER_ITEMS
-            String sqlItem = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+            String sqlItem = "INSERT INTO order_items (order_id, product_id, quantity, price, product_name, product_image) VALUES (?, ?, ?, ?, ?, ?)";
             itemStmt = conn.prepareStatement(sqlItem);
 
             for (OrderItem item : order.getItems()) {
                 itemStmt.setInt(1, orderId);
                 itemStmt.setInt(2, item.getProductId());
                 itemStmt.setInt(3, item.getQuantity());
-                itemStmt.setBigDecimal(4, item.getPriceAtPurchase()); // Giá chốt đơn
+                itemStmt.setBigDecimal(4, item.getPriceAtPurchase());
 
-                itemStmt.addBatch(); // Gom lại
+                // Lưu Snapshot tên và ảnh tại thời điểm mua
+                itemStmt.setString(5, item.getProductName());
+                itemStmt.setString(6, item.getProductImage());
+
+                itemStmt.addBatch();
             }
 
-            itemStmt.executeBatch(); // Thực thi một lần
+            itemStmt.executeBatch();// Thực thi một lần
 
             //  CHỐT GIAO DỊCH
             conn.commit();
@@ -104,5 +110,85 @@ public class MySQLOrderRepository implements OrderRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public List<Order> findByUserId(Integer userId) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Order o = mapRowToOrder(rs);
+                    list.add(o);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+
+    @Override
+    public Order findById(Integer orderId) {
+        Order order = null;
+
+        // 1. Lấy thông tin Header
+        String sqlOrder = "SELECT * FROM orders WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlOrder)) {
+            stmt.setInt(1, orderId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    order = mapRowToOrder(rs);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        if (order == null) return null;
+
+        // 2. Lấy thông tin Items (KÈM TÊN VÀ ẢNH SP)
+        String sqlItems = "SELECT oi.*, p.name, p.image " +
+                "FROM order_items oi " +
+                "JOIN products p ON oi.product_id = p.id " +
+                "WHERE oi.order_id = ?";
+
+        List<OrderItem> items = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlItems)) {
+            stmt.setInt(1, orderId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    OrderItem item = new OrderItem();
+                    item.setId(rs.getInt("id"));
+                    item.setOrderId(rs.getInt("order_id"));
+                    item.setProductId(rs.getInt("product_id"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setPriceAtPurchase(rs.getBigDecimal("price"));
+
+                    // Set dữ liệu hiển thị (từ bảng Product JOIN sang)
+                    item.setProductName(rs.getString("name"));
+                    item.setProductImage(rs.getString("image"));
+
+                    items.add(item);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        order.setItems(items);
+        return order;
+    }
+
+    private Order mapRowToOrder(ResultSet rs) throws SQLException {
+        Order o = new Order();
+        o.setId(rs.getInt("id"));
+        o.setUserId(rs.getInt("user_id"));
+        o.setTotalPrice(rs.getBigDecimal("total_price"));
+        o.setStatus(rs.getString("status"));
+        o.setReceiverName(rs.getString("receiver_name"));
+        o.setReceiverPhone(rs.getString("receiver_phone"));
+        o.setReceiverAddress(rs.getString("receiver_address"));
+        o.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return o;
     }
 }

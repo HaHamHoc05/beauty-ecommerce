@@ -7,39 +7,58 @@ import cosmetics.usecase.product.delete.*;
 import java.math.BigDecimal;
 
 public class ProductController {
-
     private final AddProductUseCase addUseCase;
     private final GetProductListUseCase listUseCase;
     private final EditProductUseCase editUseCase;
     private final DeleteProductUseCase deleteUseCase;
 
-    public ProductController(AddProductUseCase addUseCase,
-                             GetProductListUseCase listUseCase,
-                             EditProductUseCase editUseCase,
-                             DeleteProductUseCase deleteUseCase) {
-        this.addUseCase = addUseCase;
-        this.listUseCase = listUseCase;
-        this.editUseCase = editUseCase;
-        this.deleteUseCase = deleteUseCase;
+    public ProductController(AddProductUseCase addUC, GetProductListUseCase listUC, EditProductUseCase editUC, DeleteProductUseCase deleteUC) {
+        this.addUseCase = addUC;
+        this.listUseCase = listUC;
+        this.editUseCase = editUC;
+        this.deleteUseCase = deleteUC;
     }
 
-    // 1. Thêm
-    public void addProduct(String name, BigDecimal price, String image, String desc, Integer stock, Integer catId) {
-        addUseCase.execute(new AddProductInputData(name, price, image, desc, stock, catId));
+    // ADD
+    public void addProduct(String name, String priceStr, String image, String desc, String stockStr, String catIdStr) {
+        try {
+            // Xử lý dữ liệu rỗng hoặc sai định dạng
+            BigDecimal price = (priceStr == null || priceStr.isEmpty()) ? BigDecimal.ZERO : new BigDecimal(priceStr);
+            Integer stock = (stockStr == null || stockStr.isEmpty()) ? 0 : Integer.parseInt(stockStr);
+            Integer catId = (catIdStr == null || catIdStr.isEmpty()) ? null : Integer.parseInt(catIdStr);
+
+            addUseCase.execute(new AddProductInputData(name, price, image, desc, stock, catId));
+        } catch (NumberFormatException e) {
+            // Nếu parse lỗi, ném ngoại lệ để Servlet bắt
+            throw new IllegalArgumentException("Giá hoặc số lượng phải là số hợp lệ!");
+        }
     }
 
-    // 2. Xem danh sách
     public void viewList() {
         listUseCase.execute(new GetProductListInputData());
     }
 
-    // 3. Sửa
-    public void editProduct(Integer id, String name, BigDecimal price, String image, String desc, Integer stock, Integer catId, String status) {
-        editUseCase.execute(new EditProductInputData(id, name, price, image, desc, stock, catId, status));
+    // EDIT
+    public void editProduct(String idStr, String name, String priceStr, String image, String desc, String stockStr, String catIdStr, String status) {
+        try {
+            Integer id = Integer.parseInt(idStr);
+            BigDecimal price = new BigDecimal(priceStr);
+            Integer stock = Integer.parseInt(stockStr);
+            Integer catId = Integer.parseInt(catIdStr);
+
+            editUseCase.execute(new EditProductInputData(id, name, price, image, desc, stock, catId, status));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Dữ liệu nhập vào không đúng định dạng số!");
+        }
     }
 
-    // 4. Xóa
-    public void deleteProduct(Integer id) {
-        deleteUseCase.execute(new DeleteProductInputData(id));
+    // DELETE
+    public void deleteProduct(String idStr) {
+        try {
+            Integer id = Integer.parseInt(idStr);
+            deleteUseCase.execute(new DeleteProductInputData(id));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("ID sản phẩm không hợp lệ!");
+        }
     }
 }

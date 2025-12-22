@@ -26,4 +26,5 @@ public interface CartRepository {
     void clearCart(Integer cartId);
 
     void removeItem(Integer cartId, Integer productId);
+
 }

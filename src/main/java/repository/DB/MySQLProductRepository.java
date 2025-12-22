@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySQLProductRepository implements ProductRepository {
 
@@ -94,6 +96,35 @@ public class MySQLProductRepository implements ProductRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            // Ném lỗi để UseCase biết mà xử lý (nếu có ràng buộc khóa ngoại)
+            throw new RuntimeException("Lỗi xóa sản phẩm (Có thể do ràng buộc dữ liệu): " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Product> findAll() {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM products ORDER BY id DESC"; // Lấy mới nhất trước
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("name"));
+                p.setPrice(rs.getBigDecimal("price"));
+                p.setImage(rs.getString("image"));
+                p.setDescription(rs.getString("description"));
+                p.setStockQuantity(rs.getInt("stock_quantity"));
+                p.setCategoryId(rs.getInt("category_id"));
+                p.setStatus(rs.getString("status"));
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
