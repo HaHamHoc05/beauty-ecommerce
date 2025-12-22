@@ -48,12 +48,12 @@
                                     <h6 class="my-0">${item.productName}</h6>
                                     <small class="text-muted">SL: ${item.quantity}</small>
                                 </div>
-                                <span class="text-muted"><fmt:formatNumber value="${item.totalPrice}" pattern="#,###"/> đ</span>
+                                <span class="text-muted"><fmt:formatNumber value="${item.subTotal}" pattern="#,###"/> đ</span>
                             </li>
                         </c:forEach>
                         <li class="list-group-item d-flex justify-content-between bg-light">
                             <span class="fw-bold">TỔNG CỘNG</span>
-                            <strong class="text-danger"><fmt:formatNumber value="${cart.totalAmount}" pattern="#,###"/> đ</strong>
+                            <strong class="text-danger"><fmt:formatNumber value="${cart.totalPrice}" pattern="#,###"/> đ</strong>
                         </li>
                     </ul>
                 </div>

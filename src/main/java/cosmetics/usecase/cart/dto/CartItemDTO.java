@@ -25,4 +25,8 @@ public class CartItemDTO {
     public Integer getQuantity() { return quantity; }
     public BigDecimal getPrice() { return price; }
     public BigDecimal getSubTotal() { return subTotal; }
+    public BigDecimal getTotalPrice() {
+        if (price == null) return BigDecimal.ZERO;
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
 }

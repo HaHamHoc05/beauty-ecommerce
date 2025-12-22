@@ -24,10 +24,25 @@ public class RegisterUseCase implements InputBoundary<RegisterInputData> {
 
     @Override
     public void execute(RegisterInputData input) {
+        // 1. Kiểm tra mật khẩu khớp (Code cũ)
         if (!input.getPassword().equals(input.getConfirmPassword())) {
-            outputBoundary.present(new RegisterOutputData(false, "Mật khẩu đăng nhập không khớp"));
+            outputBoundary.present(new RegisterOutputData(false, "Mật khẩu xác nhận không khớp"));
             return;
         }
+
+        // 2. KIỂM TRA ĐỊNH DẠNG EMAIL (Mới)
+        if (!input.isValidEmail()) {
+            outputBoundary.present(new RegisterOutputData(false, "Email không đúng định dạng (Ví dụ: abc@gmail.com)"));
+            return;
+        }
+
+        // 3. KIỂM TRA ĐỊNH DẠNG SĐT (Mới)
+        if (!input.isValidPhone()) {
+            outputBoundary.present(new RegisterOutputData(false, "Số điện thoại không hợp lệ (Phải là 10 số, bắt đầu bằng 0)"));
+            return;
+        }
+
+        // 4. Kiểm tra tồn tại trong DB (Code cũ)
         if (userRepository.existsByEmail(input.getEmail())) {
             outputBoundary.present(new RegisterOutputData(false,"Email đã được sử dụng"));
             return;
@@ -37,20 +52,22 @@ public class RegisterUseCase implements InputBoundary<RegisterInputData> {
             return;
         }
 
+        // 5. Tạo User và SET PHONE
         User newUser = new User();
-        newUser.setEmail(input.getEmail());
         newUser.setUsername(input.getUsername());
+        newUser.setEmail(input.getEmail());
         newUser.setFullName(input.getFullName());
+        newUser.setPhone(input.getPhone()); // <--- LƯU SĐT VÀO ENTITY
         newUser.setRole(Role.CUSTOMER);
 
-        // ma hoa mk
         try {
             newUser.changePassword(input.getPassword(), passwordEncoder);
         } catch (IllegalArgumentException e) {
             outputBoundary.present(new RegisterOutputData(false, e.getMessage()));
             return;
         }
+
         userRepository.save(newUser);
-        outputBoundary.present(new RegisterOutputData(true, "Đăng kí thành công"));
+        outputBoundary.present(new RegisterOutputData(true, "Đăng ký thành công"));
     }
 }

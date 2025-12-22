@@ -37,18 +37,19 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String confirm = req.getParameter("confirmPassword");
         String fullName = req.getParameter("fullName");
         String email = req.getParameter("email");
+        String phone = req.getParameter("phone"); // <--- LẤY PHONE
+        String password = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
 
-        if (!password.equals(confirm)) {
+        if (!password.equals(confirmPassword)) {
             req.setAttribute("error", "Mật khẩu xác nhận không khớp!");
             req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
             return;
         }
 
-        controller.register(username, password, confirm, fullName, email);
+        controller.execute(username, password, confirmPassword, fullName, email, phone);
         var vm = presenter.getViewModel();
         if ("SUCCESS".equals(vm.getStatus())) {
             // Thành công -> Chuyển qua trang Login

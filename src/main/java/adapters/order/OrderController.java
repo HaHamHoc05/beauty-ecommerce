@@ -31,7 +31,9 @@ public class OrderController {
     }
 
     // Hành động 3: Xem chi tiết
-    public void viewOrderDetail(Integer orderId, Integer userId) {
-        getOrderDetailUseCase.execute(new GetOrderDetailInputData(orderId, userId));
+    public void viewOrderDetail(Integer orderId, Integer userId, boolean isAdmin) {
+        // Truyền isAdmin vào InputData
+        GetOrderDetailInputData input = new GetOrderDetailInputData(orderId, userId, isAdmin);
+        getOrderDetailUseCase.execute(input);
     }
 }

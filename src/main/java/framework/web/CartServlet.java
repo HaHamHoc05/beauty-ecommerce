@@ -82,7 +82,7 @@ public class CartServlet extends HttpServlet {
     }
 
     private User getUser(HttpServletRequest req) {
-        String username = (String) req.getSession().getAttribute("userid");
+        String username = (String) req.getSession().getAttribute("user");
         return (username != null) ? userRepo.findByUsername(username) : null;
     }
 }

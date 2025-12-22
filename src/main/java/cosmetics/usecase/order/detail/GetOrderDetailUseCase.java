@@ -28,7 +28,7 @@ public class GetOrderDetailUseCase implements InputBoundary<GetOrderDetailInputD
             return;
         }
         // Check xem đơn hàng có phải của user này không
-        if (!order.getUserId().equals(input.getUserId())) {
+        if (!input.isAdmin() && !order.getUserId().equals(input.getUserId())) {
             outputBoundary.present(new GetOrderDetailOutputData("Bạn không có quyền xem đơn hàng này!"));
             return;
         }

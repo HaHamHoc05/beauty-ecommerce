@@ -52,8 +52,7 @@
                 <tr>
                     <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
                     <td colspan="2" class="text-danger fw-bold fs-5">
-                        <fmt:formatNumber value="${cart.totalAmount}" pattern="#,###"/>đ
-                    </td>
+                        <fmt:formatNumber value="${cart.totalPrice}" pattern="#,###"/>đ                    </td>
                 </tr>
                 </tfoot>
             </table>

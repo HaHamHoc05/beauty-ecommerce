@@ -10,7 +10,11 @@ public class RegisterController {
         this.inputBoundary = inputBoundary;
     }
 
-    public void register(String username, String password, String confirm, String fullname, String email) {
-        RegisterInputData input = new RegisterInputData(username, email, password, confirm, fullname);        inputBoundary.execute(input);
+    public void execute(String username, String password, String confirm, String fullname, String email, String phone) {
+
+
+        RegisterInputData input = new RegisterInputData(username, email, password, confirm, fullname, phone);
+
+        inputBoundary.execute(input);
     }
 }

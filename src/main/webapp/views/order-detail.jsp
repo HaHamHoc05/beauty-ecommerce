@@ -40,14 +40,14 @@
                         <td>${item.productName}</td>
                         <td><fmt:formatNumber value="${item.price}" pattern="#,###"/></td>
                         <td>${item.quantity}</td>
-                        <td><fmt:formatNumber value="${item.totalPrice}" pattern="#,###"/></td>
+                        <td><fmt:formatNumber value="${item.subTotal}" pattern="#,###"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
                 <tfoot>
                 <tr>
                     <td colspan="3" class="text-end fw-bold">TỔNG CỘNG</td>
-                    <td class="text-danger fw-bold"><fmt:formatNumber value="${order.totalPrice}" pattern="#,###"/> đ</td>
+                    <td class="text-danger fw-bold"><fmt:formatNumber value="${item.subTotal}" pattern="#,###"/> đ</td>
                 </tr>
                 </tfoot>
             </table>

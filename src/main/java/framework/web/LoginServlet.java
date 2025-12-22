@@ -50,8 +50,11 @@ public class LoginServlet extends HttpServlet {
 
             HttpSession session = req.getSession();
             // Lưu thông tin vào session (Lấy từ ViewModel)
-            session.setAttribute("user", vm.getFullName()); // ViewModel có getFullName()
+
+            session.setAttribute("user", username);
+            session.setAttribute("fullname", vm.getFullName()); // ViewModel có getFullName()
             session.setAttribute("role", vm.getRole());     // ViewModel có getRole()
+
 
             // Điều hướng
             if ("ADMIN".equals(vm.getRole())) {

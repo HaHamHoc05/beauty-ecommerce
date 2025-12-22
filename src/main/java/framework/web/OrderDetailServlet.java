@@ -41,21 +41,27 @@ public class OrderDetailServlet extends HttpServlet {
             return;
         }
         User user = userRepo.findByUsername(username);
+        String role = (String) req.getSession().getAttribute("role");
+        boolean isAdmin = "ADMIN".equals(role);
 
         try {
             Integer orderId = Integer.parseInt(req.getParameter("id"));
-            controller.viewOrderDetail(orderId, user.getId());
+            controller.viewOrderDetail(orderId, user.getId(), isAdmin);
 
             var vm = presenter.getViewModel();
             if ("SUCCESS".equals(vm.getStatus())) {
                 req.setAttribute("order", vm.getCurrentOrder());
                 req.getRequestDispatcher("/views/order-detail.jsp").forward(req, resp);
             } else {
-                // Không tìm thấy hoặc không có quyền
-                resp.sendRedirect("my-orders");
+                // Nếu là Admin mà bị lỗi thì về trang Admin, User thì về My Orders
+                if (isAdmin) {
+                    resp.sendRedirect("admin/orders");
+                } else {
+                    resp.sendRedirect("my-orders");
+                }
             }
         } catch (NumberFormatException e) {
-            resp.sendRedirect("my-orders");
+            resp.sendRedirect(isAdmin ? "admin/orders" : "my-orders");
         }
     }
 }
