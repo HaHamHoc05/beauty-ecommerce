@@ -1,4 +1,4 @@
-package cosmetics.adapters;
+package adapters;
 
 import java.util.ArrayList;
 import java.util.List;

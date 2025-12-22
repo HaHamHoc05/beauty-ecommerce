@@ -1,4 +1,4 @@
-package cosmetics.repository;
+package repository;
 
 public interface PasswordEncoder {
     String encode(String rawPassword);

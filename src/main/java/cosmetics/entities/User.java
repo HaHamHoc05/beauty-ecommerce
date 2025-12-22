@@ -1,6 +1,6 @@
 package cosmetics.entities;
 
-import cosmetics.repository.PasswordEncoder;
+import repository.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -59,9 +59,10 @@ public class User {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
+
     public boolean verifyPassword(String rawPassword, PasswordEncoder encoder) {
         if (this.password == null || rawPassword == null) return false;
-        return encoder.matches(this.password, rawPassword);
+        return encoder.matches(rawPassword, this.password);
     }
 
     public void changePassword(String newPassword, PasswordEncoder encoder) {

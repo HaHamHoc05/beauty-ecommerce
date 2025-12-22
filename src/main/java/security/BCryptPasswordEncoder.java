@@ -1,6 +1,6 @@
 package security;
 
-import cosmetics.repository.PasswordEncoder;
+import repository.PasswordEncoder;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class BCryptPasswordEncoder implements PasswordEncoder {

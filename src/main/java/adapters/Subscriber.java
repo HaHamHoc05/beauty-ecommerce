@@ -1,4 +1,4 @@
-package cosmetics.adapters;
+package adapters;
 
 public class Subscriber {
     void update (String eventType, Object date);

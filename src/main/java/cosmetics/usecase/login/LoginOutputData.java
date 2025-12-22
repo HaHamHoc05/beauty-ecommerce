@@ -14,7 +14,7 @@ public class LoginOutputData implements ResponseData {
     }
 
     public LoginOutputData( String fullname, String role) {
-        this.success = success;
+        this.success = true;
         this.fullname = fullname;
         this.role = role;
     }

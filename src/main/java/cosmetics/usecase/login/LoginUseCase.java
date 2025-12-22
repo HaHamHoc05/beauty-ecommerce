@@ -3,8 +3,8 @@ package cosmetics.usecase.login;
 import cosmetics.InputBoundary;
 import cosmetics.OutputBoundary;
 import cosmetics.entities.User;
-import cosmetics.repository.PasswordEncoder;
-import cosmetics.repository.UserRepository;
+import repository.PasswordEncoder;
+import repository.UserRepository;
 
 public class LoginUseCase implements InputBoundary<LoginInputData> {
 
