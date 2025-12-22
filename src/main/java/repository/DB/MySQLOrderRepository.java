@@ -191,4 +191,30 @@ public class MySQLOrderRepository implements OrderRepository {
         o.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return o;
     }
+
+    @Override
+    public List<Order> findAll() {
+        List<Order> list = new ArrayList<>();
+        // Lấy tất cả đơn hàng, đơn mới nhất lên đầu
+        String sql = "SELECT * FROM orders ORDER BY created_at DESC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapRowToOrder(rs)); // mapRowToOrder là hàm helper bạn đã viết ở bài trước
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+
+    @Override
+    public void updateStatus(Integer orderId, String status) {
+        String sql = "UPDATE orders SET status = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, orderId);
+            stmt.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
 }

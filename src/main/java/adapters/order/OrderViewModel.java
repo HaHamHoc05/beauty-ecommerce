@@ -4,16 +4,27 @@ import cosmetics.usecase.order.dto.OrderDTO;
 import java.util.List;
 
 public class OrderViewModel {
-    // 1. Dùng cho PlaceOrder
-    private String status;      // SUCCESS, ERROR
-    private String message;     // Thông báo lỗi/thành công
-    private Integer newOrderId; // ID đơn hàng vừa tạo
 
-    // 2. Dùng cho GetHistory & GetDetail
-    private List<OrderDTO> orders; // Danh sách đơn hàng
-    private OrderDTO currentOrder; // Chi tiết đơn hàng đang xem
+    // 1. Dùng cho: PlaceOrder (Đặt hàng) & Admin Update Status (Cập nhật trạng thái)
+    // - Lưu trạng thái: "SUCCESS" hoặc "ERROR"
+    private String status;
+    // - Lưu thông báo: "Đặt hàng thành công" hoặc "Cập nhật thất bại"
+    private String message;
 
-    // --- Getters & Setters ---
+    // - Riêng cho PlaceOrder: ID đơn vừa tạo
+    private Integer newOrderId;
+
+    // 2. Dùng cho: GetMyOrders (Khách) & GetAllOrders (Admin)
+    // - Lưu danh sách đơn hàng để hiển thị ra bảng
+    private List<OrderDTO> orders;
+
+    // 3. Dùng cho: GetOrderDetail (Xem chi tiết)
+    // - Lưu chi tiết 1 đơn hàng cụ thể
+    private OrderDTO currentOrder;
+
+
+    // ================= GETTERS & SETTERS =================
+
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 

@@ -2,6 +2,10 @@ package adapters.order;
 
 import adapters.Publisher;
 // Import 3 bộ Output Boundary & Output Data
+import cosmetics.usecase.order.admin.GetAllOrdersOutputBoundary;
+import cosmetics.usecase.order.admin.GetAllOrdersOutputData;
+import cosmetics.usecase.order.admin.status.UpdateOrderStatusOutputBoundary;
+import cosmetics.usecase.order.admin.status.UpdateOrderStatusOutputData;
 import cosmetics.usecase.order.create.PlaceOrderOutputBoundary;
 import cosmetics.usecase.order.create.PlaceOrderOutputData;
 import cosmetics.usecase.order.get.GetMyOrdersOutputBoundary;
@@ -12,7 +16,9 @@ import cosmetics.usecase.order.detail.GetOrderDetailOutputData;
 public class OrderPresenter extends Publisher implements
         PlaceOrderOutputBoundary,
         GetMyOrdersOutputBoundary,
-        GetOrderDetailOutputBoundary {
+        GetOrderDetailOutputBoundary,
+        GetAllOrdersOutputBoundary,
+        UpdateOrderStatusOutputBoundary {
 
     private final OrderViewModel viewModel = new OrderViewModel();
 
@@ -70,6 +76,21 @@ public class OrderPresenter extends Publisher implements
             viewModel.setStatus("ERROR");
             viewModel.setMessage(output.getErrorMessage());
             viewModel.setCurrentOrder(null);
+        }
+    }
+    @Override
+    public void present(GetAllOrdersOutputData output) {
+        viewModel.setOrders(output.getOrders());
+    }
+
+    @Override
+    public void present(UpdateOrderStatusOutputData output) {
+        if (output.isSuccess()) {
+            viewModel.setStatus("SUCCESS");
+            viewModel.setMessage(output.getMessage());
+        } else {
+            viewModel.setStatus("ERROR");
+            viewModel.setMessage(output.getMessage());
         }
     }
 }

@@ -102,6 +102,7 @@ public class MySQLProductRepository implements ProductRepository {
         }
     }
 
+
     @Override
     public List<Product> findAll() {
         List<Product> list = new ArrayList<>();
